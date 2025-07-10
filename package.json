@@ -1,0 +1,22 @@
+{
+  "name": "fluxtube",
+  "version": "1.0.0",
+  "description": "This repository is intended to host the source code for a video streaming and upload microservices application named FluxTube.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kfkudjoe/fluxtube.git"
+  },
+  "author": "Faakor Kudjoe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kfkudjoe/fluxtube/issues"
+  },
+  "homepage": "https://github.com/kfkudjoe/fluxtube#readme",
+  "dependencies": {
+    "express": "^5.0.0-beta.1"
+  }
+}
