@@ -1,3 +1,4 @@
 general-auth-token.txt
 node_modules/
 video-streaming/node_modules/
+video-storage/node_modules
