@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  video-steraming:
+  video-streaming:
     image: video-streaming-fluxtube
     build:
       context: ./video-streaming
