@@ -1,6 +1,6 @@
 FROM node:18.17.1
 
-WORKDIR /home/l3/Documents/Software_Engineering/microservices_devops/fluxtube/video-streaming
+WORKDIR /usr/src/app
 COPY package*.json ./
 
 CMD npm install --prefer-offline && \
