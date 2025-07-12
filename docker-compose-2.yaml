@@ -1,0 +1,33 @@
+version: '3'
+services:
+  video-streaming:
+    image: video-streaming-fluxtube
+    build:
+      context: ./video-streaming
+      dockerfile: dockerfile-prod
+    container_name: video-streaming-fluxtube
+    volumes:
+      - /tmp/video-streaming/npm-cache:/root/.npm:z
+      - ./video-streaming/src:/usr/src/app/src:z
+    ports:
+      - "4001:80"
+    environment:
+      - PORT=80
+      - NODE_ENV=production
+    restart: "no"
+
+  video-storage-local:
+    image: video-storage-local-fluxtube
+    build:
+      context: ./video-storage-local
+      dockerfile: dockerfile-prod
+    container_name: video-storage-local-fluxtube
+    volumes:
+      - /tmp/video-storage-local/npm-cache:/root/.npm:z
+      - ./video-storage-local/src:/usr/src/app/src:z
+      - ./video-storage-local/storage:/usr/src/app/storage:z
+    ports:
+      - "4005:80"
+    environment:
+      - PORT=80
+    restart: "no"
