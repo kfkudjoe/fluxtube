@@ -1,9 +1,16 @@
 version: '3'
 
 services:
+  video-db-mongodb:
+    image: mongo:7.0.0
+    container_name: video-db-mongodb
+    ports:
+      - "27017:27107"
+    restart: "no"
+
   video-rabbit-mq:
     image: rabbitmq:latest
-    container_name: rabbitmq
+    container_name: video-rabbit-mq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -11,6 +18,7 @@ services:
       - RABBITMQ_DEFAULT_USER=test
       - RABBITMQ_DEFAULT_PASS=test
     restart: "no"
+
   video-streaming:
     image: video-streaming-fluxtube
     build:
