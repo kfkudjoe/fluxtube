@@ -1,15 +1,36 @@
 const express = require("express");
+const amqp = require("amqplib");
 const axios = require("axios");
 
 if (!process.env.PORT) {
 	throw new Error("Please specify the port number for the HTTP server with the environment varible PORT.")
 }
 
-const PORT = process.env.PORT;
+if (!process.env.RABBIT) {
+	throw new Error("Please specify the name of the RabbitMQ host using environment variable RABBIT.")
+}
 
+const PORT = process.env.PORT;
+const RABBIT = process.env.RABBIT;
 
 // Application entry point
 async function main() {
+	// Connects to the RabbitMQ server
+	const messagingConnection = await amqp.connect(RABBIT);
+	// Creates a RabbitMQ messaging channel
+	const messageChannel = await messagingConnection.createChannel();
+	// Asserts that we have a "viewed" exchange
+	await messageChannel.assertExchange("viewed", "fanout");
+
+	// Broadcasts the "viewed" message to other microservices
+	function broadcastViewedMessage(messageChannel, videoId) {
+		console.log (`Publishing message on "viewed" exchange.`);
+		const msg = { video: { id: videoId } };
+		const jsonMsg = JSON.stringify(msg);
+
+		// Publishes the message to the "viewed" exchange.
+		messageChannel.publish("viewed", "", Buffer.from(jsonMsg));
+	}
 
 	// Instantiate the application
 	const app = express();
@@ -28,6 +49,9 @@ async function main() {
 		});
 		
 		response.data.pipe(res);
+
+		// Sends the "viewed" message to indicate this video has been watched.
+		broadcastViewedMessage(messageChannel, videoId);
 	});
 
 	// Starts the HTTP server
