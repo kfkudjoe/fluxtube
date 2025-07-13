@@ -35,10 +35,6 @@ services:
       # Set the internal port the Node.js application listens on.
       - PORT=3000
       - NODE_ENV=production
-      - RABBIT=amqp://test:test@rabbitmq:5672
-    depends_on:
-      - video-rabbit-mq
-      - video-db-mongodb
     restart: "no"
 
   video-storage-local:
