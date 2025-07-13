@@ -43,7 +43,7 @@ async function main() {
 		// Forwards the request to the video-storage microservice
 		const response = await axios({
 			method: "GET",
-			url: `http://video-storage/video?id=${videoId}`,
+			url: `http://video-storage-fluxtube/video?id=${videoId}`,
 			data: req,
 			responseType: "stream",
 		});
