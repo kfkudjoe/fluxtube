@@ -6,4 +6,5 @@ RUN npm ci --omit=dev
 COPY ./src ./src
 
 
-CMD npm run start
+CMD npx wait-port rabbitmq:5672 && \
+    npm run start
