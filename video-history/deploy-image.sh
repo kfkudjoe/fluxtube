@@ -26,9 +26,11 @@ docker rm $CONTAINER_NAME &> /dev/null
 echo "Deploying '$CONTAINER_NAME' container..."
 docker run -d \
 	--name $CONTAINER_NAME \
-	-p $HOST_PORT:$CONTAINER_PORT
-	-e PORT=$CONTAINER_PORT
-	-e DBHOST="mongodb://$DB_HOST:27107"
+	-p $HOST_PORT:$CONTAINER_PORT \
+	--network $NETWORK_NAME \
+	-e PORT=$CONTAINER_PORT \
+	-e DBHOST="mongodb://$DB_HOST:27017" \
+	-e DBNAME=$DB_NAME \
 	-e RABBIT="amqp://guest:guest@$RABBIT_HOST:5672" \
 	$CONTAINER_NAME
 

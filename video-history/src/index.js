@@ -71,7 +71,7 @@ async function main() {
 		console.log("Acknowledging that the message was handled.");
 
 		// If there is no error, acknowledge the message
-		messageChanel.ack(msg);
+		messageChannel.ack(msg);
 	});
 
 	// HTTP GET route handler for retrieving video viewing history
