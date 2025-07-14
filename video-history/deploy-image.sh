@@ -9,9 +9,9 @@ CONTAINER_PORT=3000
 # Environment variables for the microservice
 # DBHOST is the name of the MongoDB container on the shared network
 # RABBIT is the name of the RabbitMQ container on the shared network
-DB_HOST="mongodb"
+DB_HOST="video-db-mongodb"
 DB_NAME="history"
-RABBIT_HOST="rabbitmq"
+RABBIT_HOST="video-rabbit-mq"
 
 # Ensure the docker network exists
 echo "Ensuring docker network '$NETWORK_NAME' exists..."
@@ -38,6 +38,6 @@ echo "Video history microservice has been deployed."
 echo "Access it on host port $HOST_PORT."
 
 # Note: Ensure 'mongodb' and 'rabbitmq' containers are running on '$NETWORK_NAME'
-# Named as 'mongodb' and 'rabbitmq' respectively.
+# Named as 'video-db-mongodb' and 'video-rabbit-mq' respectively.
 # To enable RabbitMQ management plugin:
 # docker exec rabbitmq rabbitmq-plugins enable rabbitmq_management
