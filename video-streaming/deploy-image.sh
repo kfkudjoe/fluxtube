@@ -18,8 +18,8 @@ docker run -d \
   --network $NETWORK_NAME \
   -p $HOST_PORT:$CONTAINER_PORT \
   -e PORT=$CONTAINER_PORT \
-  -e RABBIT=rabbitmq \
+  -e RABBIT=amqp://test:test@video-rabbit-mq:5672 \
   video-streaming-fluxtube
 
 echo "Video Streaming microservice deployed on port $HOST_PORT."
-echo "Ensure 'rabbitmq' and 'video-storage-local-fluxtube' containers are also on '$NETWORK_NAME'."
+echo "Ensure 'video-rabbit-mq' and 'video-storage-local-fluxtube' containers are also on '$NETWORK_NAME'."
