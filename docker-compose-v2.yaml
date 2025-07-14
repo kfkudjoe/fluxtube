@@ -41,29 +41,6 @@ services:
       - video-db-mongodb
     restart: "no"
 
-  video-history:
-    image: video-history-fluxtube
-    container_name: video-history-fluxtube
-    build: 
-      context: ./video-history
-      dockerfile: dockerfile-prod
-    container_name: video-history-fluxtube
-    volumes:
-      - /tmp/history/npm-cache:/root/.npm:z
-      - ./history/src:/usr/src/app/src:z
-    ports:
-      - "4002:80"
-    environment:
-      - PORT=80
-      - RABBIT=amqp://test:test@rabbitmq:5672
-      - DBHOST=mongodb://mongodb:27017
-      - DBNAME=history
-      - NODE_ENV=development
-    depends_on:
-      - video-rabbit-mq
-      - video-db-mongodb
-    restart: "no"
-
   video-storage-local:
     image: video-storage-local-fluxtube
     build:
