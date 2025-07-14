@@ -5,7 +5,7 @@ services:
     image: mongo:7.0.0
     container_name: video-db-mongodb
     ports:
-      - "27017:27107"
+      - "27017:27017"
     restart: "no"
 
   video-rabbit-mq:
@@ -35,33 +35,32 @@ services:
       # Set the internal port the Node.js application listens on.
       - PORT=3000
       - NODE_ENV=production
-      - RABBIT=amqp://test:test@rabbitmq:5672
+      - RABBIT=amqp://test:test@video-rabbit-mq:5672
     depends_on:
-      - video-rabbit-mq
       - video-db-mongodb
+      - video-rabbit-mq
     restart: "no"
 
   video-history:
     image: video-history-fluxtube
-    container_name: video-history-fluxtube
     build: 
       context: ./video-history
       dockerfile: dockerfile-prod
     container_name: video-history-fluxtube
     volumes:
       - /tmp/history/npm-cache:/root/.npm:z
-      - ./history/src:/usr/src/app/src:z
+      # - ./history/src:/usr/src/app/src:z
     ports:
-      - "4002:80"
+      - "4002:3000"
     environment:
-      - PORT=80
-      - RABBIT=amqp://test:test@rabbitmq:5672
-      - DBHOST=mongodb://mongodb:27017
+      - PORT=3000
+      - NODE_ENV=production
+      - RABBIT=amqp://guest:guest@video-rabbit-mq:5672
+      - DBHOST=mongodb://video-db-mongodb:27017
       - DBNAME=history
-      - NODE_ENV=development
     depends_on:
-      - video-rabbit-mq
       - video-db-mongodb
+      - video-rabbit-mq
     restart: "no"
 
   video-storage-local:
