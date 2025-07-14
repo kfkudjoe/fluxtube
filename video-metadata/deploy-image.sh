@@ -32,7 +32,7 @@ docker run -d \
 	-e PORT=$CONTAINER_PORT \
 	-e DBHOST="mongodb://$DBHOST:27017" \
 	-e DBNAME=$DBNAME \
-	-e RABBIT="amqp://test:test@$RABBIT_HOST:5672" \
+	-e RABBIT="amqp://guest:guest@$RABBIT_HOST:5672" \
 	$CONTAINER_NAME
 
 echo "Video metadata microservice has been deployed."

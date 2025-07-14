@@ -1,6 +1,6 @@
 const express = require("express");
 const mongodb = require("mongodb");
-const amqplib = require("amqplib");
+const amqp = require("amqplib");
 
 // Starts the microservice.
 async function startMicroservice(dbHost, dbName, rabbitHost, port) {
