@@ -48,7 +48,7 @@ services:
       dockerfile: dockerfile-prod
     container_name: video-history-fluxtube
     volumes:
-      - /tmp/video-history/npm-cache:/root/.npm:z
+      - /tmp/history/npm-cache:/root/.npm:z
       # - ./history/src:/usr/src/app/src:z
     ports:
       - "4002:3000"
@@ -76,26 +76,4 @@ services:
       - "4005:3000"
     environment:
       - PORT=3000
-    restart: "no"
-
-  video-metadata:
-    image: video-metadata-fluxtube
-    build:
-      context: ./video-metadata
-      dockerfile: dockerfile-prod
-    container_name: video-metadata-fluxtube
-    volumes:
-      - /tmp/video-metadata/npm-cache:/root/.npm:z
-      - ./video-metadata/src:/usr/src/app/src:z
-    ports:
-      - "4006:3000"
-    environment:
-      - PORT=80
-      - NODE_ENV=production
-      - RABBIT=amqp://test:test@video-rabbit-mq:5672
-      - DBHOST=mongodb://video-db-mongodb:27017
-      - DBNAME=metadata
-    depends_on:
-      - video-db-mongodb
-      - video-rabbit-mq
     restart: "no"
