@@ -123,6 +123,6 @@ if (require.main === module) {
 else {
 	// Otherwise run under test
 	module.exports = {
-		startMicroservice;
+		startMicroservice,
 	};
 }
