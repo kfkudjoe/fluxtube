@@ -55,7 +55,7 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=production
-      - RABBIT=amqp://guest:guest@video-rabbit-mq:5672
+      - RABBIT=amqp://test:test@video-rabbit-mq:5672
       - DBHOST=mongodb://video-db-mongodb:27017
       - DBNAME=history
     depends_on:
