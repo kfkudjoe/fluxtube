@@ -41,28 +41,6 @@ services:
       - video-rabbit-mq
     restart: "no"
 
-  video-upload:
-    image: video-upload-fluxtube
-    build:
-      context: ./video-upload
-      dockerfile: dockerfile-prod
-    container_name: video-upload-fluxtube
-    volumes:
-      - /tmp/video-upload-fluxtube/npm-cache:/root/.npm:z
-      - ./video-upload/uploads:/usr/src/app/uploads:z
-    ports:
-      - "4004:3000"
-    environment:
-      - PORT=3000
-      - NODE_ENV=production
-      - RABBIT=amqp://test:test@video-rabbit-mq:5672
-      - VIDEO_STORAGE_HOST=video-storage-local-fluxtube
-      - VIDEO_STORAGE_PORT=3000
-    depends_on:
-      - video-rabbit-mq
-      - video-storage-local
-    restart: "no"
-
   video-history:
     image: video-history-fluxtube
     build: 
