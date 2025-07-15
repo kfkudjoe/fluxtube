@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const path = require("path");
 
 if (!process.env.PORT) {
@@ -18,6 +19,23 @@ app.get("/video", (req, res) => {
 	const videoId = req.query.id;
 	const localFilePath = path.join(storagePath, videoId);
 	res.sendFile(localFilePath);
+});
+
+// HTTP POST route to upload a video to storage
+app.post("/upload", (req, res) => {
+
+	const videoId = req.headers.id;
+	const localFilePath = path.join(storagePath, videoId);
+	const fileWriteStream = fs.createWriteStream(localFilePath);
+
+	req.pipe(fileWriteStream)
+		.on("error", err => {
+			console.error("Upload failed.");
+			console.error(err && err.stack || err);
+		})
+		.on("finish", () => {
+			res.sendStatus(200);
+		});
 });
 
 app.listen(PORT, () => {
