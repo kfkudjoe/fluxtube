@@ -19,7 +19,35 @@ services:
       - RABBITMQ_DEFAULT_PASS=test
     restart: "no"
 
-  video-streaming:
+  video-gateway-fluxtube:
+    image: video-gateway-fluxtube
+    build:
+      context: ./video-gateway
+      dockerfile: dockerfile-prod
+    container_name: video-gateway-fluxtube
+    volumes:
+      # This volume is primarily for speeding up image builds if frequent rebuilds are conducted locally.
+      - /tmp/video-gateway/npm-cache:/root/.npm:z
+    ports:
+      # Map the host port 4000 to the container port 3000
+      - "4000:3000"
+    environment:
+      # The internal port the Node.js application listens on
+      - PORT=3000
+      - NODE_ENV=production
+      - METADATA_HOST=video-metadata-fluxtube
+      - HISTORY_HOST=video-history-fluxtube
+      - VIDEO_STREAMING_HOST=video-streaming-fluxtube
+      - VIDEO_UPLOAD_HOST=video-upload-fluxtube
+      # RABBIT is not necessary as the API GATEWAY only proxies HTTP, not direct RabbitMQ interactions
+    depends_on:
+      - video-metadata-fluxtube
+      - video-history-fluxtube
+      - video-streaming-fluxtube
+      - video-upload-fluxtube
+    restart: "no"
+
+  video-streaming-fluxtube:
     image: video-streaming-fluxtube
     build:
       context: ./video-streaming
@@ -39,31 +67,10 @@ services:
     depends_on:
       - video-db-mongodb
       - video-rabbit-mq
+      - video-storage-local-fluxtube
     restart: "no"
 
-  video-upload:
-    image: video-upload-fluxtube
-    build:
-      context: ./video-upload
-      dockerfile: dockerfile-prod
-    container_name: video-upload-fluxtube
-    volumes:
-      - /tmp/video-upload-fluxtube/npm-cache:/root/.npm:z
-      - ./video-upload/uploads:/usr/src/app/uploads:z
-    ports:
-      - "4004:3000"
-    environment:
-      - PORT=3000
-      - NODE_ENV=production
-      - RABBIT=amqp://test:test@video-rabbit-mq:5672
-      - VIDEO_STORAGE_HOST=video-storage-local-fluxtube
-      - VIDEO_STORAGE_PORT=3000
-    depends_on:
-      - video-rabbit-mq
-      - video-storage-local
-    restart: "no"
-
-  video-history:
+  video-history-fluxtube:
     image: video-history-fluxtube
     build: 
       context: ./video-history
@@ -85,7 +92,29 @@ services:
       - video-rabbit-mq
     restart: "no"
 
-  video-storage-local:
+  video-upload-fluxtube:
+    image: video-upload-fluxtube
+    build:
+      context: ./video-upload
+      dockerfile: dockerfile-prod
+    container_name: video-upload-fluxtube
+    volumes:
+      - /tmp/video-upload-fluxtube/npm-cache:/root/.npm:z
+      - ./video-upload/uploads:/usr/src/app/uploads:z
+    ports:
+      - "4003:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - RABBIT=amqp://test:test@video-rabbit-mq:5672
+      - VIDEO_STORAGE_HOST=video-storage-local-fluxtube
+      - VIDEO_STORAGE_PORT=3000
+    depends_on:
+      - video-rabbit-mq
+      - video-storage-local-fluxtube
+    restart: "no"
+
+  video-storage-local-fluxtube:
     image: video-storage-local-fluxtube
     build:
       context: ./video-storage-local
@@ -95,24 +124,24 @@ services:
       - /tmp/video-storage-local/npm-cache:/home/node/.npm:z
       - ./video-storage-local/storage:/usr/src/app/storage:z
     ports:
-      - "4005:3000"
+      - "4004:3000"
     environment:
       - PORT=3000
     restart: "no"
 
-  video-metadata:
+  video-metadata-fluxtube:
     image: video-metadata-fluxtube
     build:
       context: ./video-metadata
       dockerfile: dockerfile-prod
     container_name: video-metadata-fluxtube
     volumes:
-      - /tmp/video-metadata/npm-cache:/root/.npm:z
+      # - /tmp/video-metadata/npm-cache:/root/.npm:z
       - ./video-metadata/src:/usr/src/app/src:z
     ports:
-      - "4006:3000"
+      - "4005:3000"
     environment:
-      - PORT=80
+      - PORT=3000
       - NODE_ENV=production
       - RABBIT=amqp://test:test@video-rabbit-mq:5672
       - DBHOST=mongodb://video-db-mongodb:27017
