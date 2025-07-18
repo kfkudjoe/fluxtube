@@ -93,7 +93,7 @@ async function main() {
 			res.render("history", { videos: historyResponse.data.history });
 		} catch (err) {
 			console.error("Error retrieving history from history service: ", err.message);
-			res.status(500).send("Failed to retrieve viewing hsitory.");
+			res.status(500).send("Failed to retrieve viewing history.");
 		}
 	});
 

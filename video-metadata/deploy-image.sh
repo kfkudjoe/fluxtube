@@ -2,7 +2,7 @@
 
 # Define common network and container details
 NETWORK_NAME="fluxtube-network"
-CONTAINER_NAME="video-metadata"
+CONTAINER_NAME="video-metadata-fluxtube"
 HOST_PORT=3003
 CONTAINER_PORT=3000
 
