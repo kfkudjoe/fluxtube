@@ -48,7 +48,7 @@ async function main() {
 	});
 
 	// Web page to show viewing history
-	app.get("history", async (req, res) => {
+	app.get("/history", async (req, res) => {
 		// Retrieves the data from the history microservice
 		const historyResponse = await axios.get("http://history/history");
 
