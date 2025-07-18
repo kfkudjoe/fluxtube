@@ -24,7 +24,7 @@ docker rm $CONTAINER_NAME &> /dev/null
 
 # Deploy the API Gateway microservice
 echo "Deploying '$CONTAINER_NAME' container..."
-docker run -d
+docker run -d \
 	--name $CONTAINER_NAME \
 	-p $HOST_PORT:$CONTAINER_PORT \
 	--network $NETWORK_NAME \
