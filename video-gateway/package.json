@@ -7,7 +7,7 @@
     "start": "node ./src/index.js",
     "start:dev": "nodemon --legacy-watch ./src/index.js",
     "build:tailwind": "tailwindcss -i ./public/css/app.css -o ./public/css/tailwind.min.css --minify",
-    "watch:tailwind": "tailwindcss -i ./public/css.app.css -o ./public/css/tailwind.min.css --watch",
+    "watch:tailwind": "tailwindcss -i ./public/css/app.css -o ./public/css/tailwind.min.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
