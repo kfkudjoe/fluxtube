@@ -35,7 +35,17 @@ async function main() {
 	const app = express();
 
 	// Views management configuration goes here
-
+	// Tells Express where to find your `.hbs` template files. 
+	// `__dirname` is the current directory (`src`), 
+	// so `path.join(__dirname, 'views')` points to `src/views`.
+	app.set('views', path.join(__dirname, 'views'));
+	// Set Handlebars as the view engine
+	app.set('view engine', 'hbs');
+	// Serve static files from the 'public' directory
+	// This is crucial. It tells Express to serve static files (like your `tailwind.min.css`, `app.css`, and `upload.js`)
+	// from the `public` directory. `path.join(__dirname, '..', 'public')` 
+	// correctly navigates up one level from `src` to the `video-gateway` root and then into `public`.
+	app.use(express.static(path.join(__dirname, '..', 'public')));
 
 	// Main web page that lists videos
 	app.get("/", async (req, res) => {
