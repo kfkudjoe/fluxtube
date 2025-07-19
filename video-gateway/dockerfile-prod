@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci --omit=dev
 COPY ./src ./src
-# COPY ./public ./public
+COPY ./public ./public
 
 CMD npx wait-port video-metadata-fluxtube:3000 && \
 	npx wait-port video-history-fluxtube:3000 && \
